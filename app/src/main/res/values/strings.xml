@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">TastyTactics</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="addToFav">Add To Fav</string>
+    <string name="addToPlan">Add To Plan</string>
+    <string name="dailyInspirationMeal">Daily Inspiration Meal</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="myplan">My Plan</string>
+    <string name="favorites">Favorites</string>
+</resources>
