@@ -38,12 +38,32 @@ public class MealsRepositoryImpl {
         remoteSource.getRandomMealFromNetwork(networkCallback);
     }
 
+    public void getCategories(NetworkCallback networkCallback)
+    {
+        remoteSource.getCategoriesFromNetwork(networkCallback);
+    }
+
+    public void getMealsByCategory(NetworkCallback networkCallback, String category)
+    {
+        remoteSource.getMealsByCategoryFromNetwork(networkCallback, category);
+    }
+
+    public void getMealsByCountry(NetworkCallback networkCallback, String country)
+    {
+        remoteSource.getMealsByCountryFromNetwork(networkCallback, country);
+    }
+
+    public void getMealsByIngredient(NetworkCallback networkCallback, String ingredient)
+    {
+        remoteSource.getMealsByIngredientFromNetwork(networkCallback, ingredient);
+    }
+
     public void insertMeal(Meal meal)
     {
         localSource.insertMeal(meal);
     }
 
-    public void deleteProduct(Meal meal)
+    public void deleteMeal(Meal meal)
     {
         localSource.deleteMeal(meal);
     }

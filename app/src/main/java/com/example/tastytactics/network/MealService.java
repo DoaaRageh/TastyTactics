@@ -12,20 +12,26 @@ public interface MealService {
     @GET("random.php")
     Call<MealResponse<Meal>> getRandomMeal();
 
-    @GET("lookup.php?i={id}")
+    @GET("lookup.php")
     Call<MealResponse> getMealbyID(@Query("i") String id);
 
-    @GET("filter.php?c={category}")
-    Call<MealResponse<Meal>> getMealsbyCategory(String category);
+    @GET("search.php")
+    Call<MealResponse<Meal>> getMealsbyName(@Query("s") String mealName);
 
-    @GET("filter.php?a={country}")
-    Call<MealResponse> getMealsbyCountry(String country);
+    @GET("filter.php")
+    Call<MealResponse<Meal>> getMealsbyCategory(@Query("c") String category);
+
+    @GET("filter.php")
+    Call<MealResponse<Meal>> getMealsbyCountry(@Query("a") String country);
 
     @GET("filter.php?i={ingredient}")
-    Call<MealResponse> getMealsbyIngredient(String ingredient);
+    Call<MealResponse<Meal>> getMealsbyIngredient(String ingredient);
 
     @GET("categories.php")
-    Call<MealResponse<Category>> getCategories();
+    Call<CategoryResponse<Category>> getCategories();
+
+    /*@GET("list.php?c=list")
+    Call<MealResponse<Category>> getCategoriess();*/
 
 
 }

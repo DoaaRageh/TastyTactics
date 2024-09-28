@@ -44,7 +44,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
         View v = inflater.inflate(R.layout.fragment_meal_details, container, false);
         txtSteps = v.findViewById(R.id.txtSteps);
         image = v.findViewById(R.id.imageView);
-        txtTitle = v.findViewById(R.id.title);
+        txtTitle = v.findViewById(R.id.favMealTitle);
 
         presenter = new MealDetailsPresenter(this);
         if (getArguments() != null) {

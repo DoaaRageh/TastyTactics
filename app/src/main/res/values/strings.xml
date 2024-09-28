@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">TastyTactics</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="app_name">Tasty Tactics</string>
     <string name="addToFav">Add To Fav</string>
     <string name="addToPlan">Add To Plan</string>
     <string name="dailyInspirationMeal">Daily Inspiration Meal</string>
@@ -8,4 +7,10 @@
     <string name="search">Search</string>
     <string name="myplan">My Plan</string>
     <string name="favorites">Favorites</string>
+    <string name="categories">Categories</string>
+    <string name="searchByName">Search</string>
+    <string name="searchByCategory">Category</string>
+    <string name="searchByCountry">Country</string>
+    <string name="searchByIngredient">Ingredient</string>
+    <string name="removeFromFav">Remove From Fav</string>
 </resources>

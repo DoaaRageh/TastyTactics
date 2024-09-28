@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.tastytactics.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,7 +20,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-
+        /*LottieAnimationView animationView = findViewById(R.id.animation_view);
+        animationView.setAnimation("animation3.json");
+        animationView.playAnimation();*/
         animation= AnimationUtils.loadAnimation(this,R.anim.animation);
         txtView=findViewById(R.id.txtView);
         txtView.startAnimation(animation);

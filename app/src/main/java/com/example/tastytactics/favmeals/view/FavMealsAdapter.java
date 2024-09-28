@@ -1,4 +1,4 @@
-package com.example.tastytactics.home.view;
+package com.example.tastytactics.favmeals.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -7,9 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,59 +19,51 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.tastytactics.R;
 import com.example.tastytactics.model.Meal;
 
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
+public class FavMealsAdapter extends RecyclerView.Adapter<FavMealsAdapter.ViewHolder>{
     private final Context context;
     private List<Meal> meals;
     private static final String TAG = "RecyclerView";
-    private OnMealClickListener listener;
+    private OnFavClickListener listener;
 
-    // Constructor
-    public HomeAdapter(Context _context, List<Meal> _meals, OnMealClickListener _listener) {
+
+    public FavMealsAdapter(Context _context, List<Meal> _meals, OnFavClickListener _listener) {
         context = _context;
         meals = _meals;
         listener = _listener;
     }
 
-    public void setList(List<Meal> _meals)
-    {
-        meals = _meals;
-    }
 
-
-    // ViewHolder inner class
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView image;
         public TextView txtTitle;
-        public Button btnAddToPlan;
-        public ImageButton btnAddToFav;
+        public Button btnRemoveFromFav;
         public ConstraintLayout constraintLayout;
         public View layout;
-
 
 
         public ViewHolder(View v) {
             super(v);
             layout = v;
-            image = v.findViewById(R.id.mealImage);
-            txtTitle = v.findViewById(R.id.mealTitle);
-            btnAddToPlan = v.findViewById(R.id.btnAddToPlan);
-            btnAddToFav = v.findViewById(R.id.btnAddToFav);
-            constraintLayout = v.findViewById(R.id.mealRow);
-
+            image = v.findViewById(R.id.favMealImage);
+            txtTitle = v.findViewById(R.id.favMealTitle);
+            btnRemoveFromFav = v.findViewById(R.id.btnAddRemoveFav);
+            constraintLayout = v.findViewById(R.id.favMealRow);
         }
     }
 
-    // Create new views (invoked by the layout manager)
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup recyclerView, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(recyclerView.getContext());
-        View v = inflater.inflate(R.layout.meal_layout, recyclerView, false);
+        View v = inflater.inflate(R.layout.fav_meal_layout, recyclerView, false);
         ViewHolder vh = new ViewHolder(v);
         Log.i(TAG, "===== onCreateViewHolder =====");
         return vh;
     }
+
 
     @Override
     public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
@@ -82,29 +74,27 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
                 .into(holder.image);
         holder.txtTitle.setText(meals.get(position).getMeal());
 
-        holder.btnAddToFav.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onFavClick(meals.get(position));
-            }
-        });
-
         Log.i(TAG, "onBindViewHolder: " + meals.get(position).getMeal());
         Log.i(TAG, "***** onBindViewHolder **************");
 
 
 
-        holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
+        holder.btnRemoveFromFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onMealClick(meals.get(position).getMeal(), meals.get(position).getInstructions(), meals.get(position).getMealThumb());
+                listener.onFavMealClick(meals.get(position));
             }
         });
 
     }
 
+
     @Override
     public int getItemCount() {
         return meals.size();
+    }
+
+    public void setMeals(List<Meal> _meals) {
+        meals = _meals;
     }
 }

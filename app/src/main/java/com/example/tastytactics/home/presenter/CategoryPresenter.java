@@ -8,18 +8,18 @@ import com.example.tastytactics.network.NetworkCallback;
 
 import java.util.List;
 
-public class HomePresenter implements NetworkCallback<Meal>{
+public class CategoryPresenter implements NetworkCallback<Category> {
     private MealsRepositoryImpl repo;
     private HomeView view;
 
-    public HomePresenter(HomeView _view, MealsRepositoryImpl _repo) {
+    public CategoryPresenter(HomeView _view, MealsRepositoryImpl _repo) {
         view = _view;
         repo = _repo;
     }
 
     @Override
-    public void onSuccessResult(List<Meal> meals) {
-        view.showData(meals);
+    public void onSuccessResult(List<Category> categories) {
+        view.showCategories(categories);
     }
 
     @Override
@@ -28,12 +28,7 @@ public class HomePresenter implements NetworkCallback<Meal>{
     }
 
 
-    public void getRandomMeal() {
-        repo.getRandomMeal(this);
-    }
-
-    public void addToFav(Meal meal)
-    {
-        repo.insertMeal(meal);
+    public void getCategories() {
+        repo.getCategories(this);
     }
 }

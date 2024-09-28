@@ -2,6 +2,7 @@ package com.example.tastytactics.network;
 
 import android.util.Log;
 
+import com.example.tastytactics.model.Category;
 import com.example.tastytactics.model.Meal;
 
 import retrofit2.Call;
@@ -49,4 +50,75 @@ public class MealsRemoteDataSourceImpl {
         });
     }
 
+    public void getCategoriesFromNetwork(NetworkCallback networkCallback) {
+        mealService.getCategories().enqueue(new Callback<CategoryResponse<Category>>() {
+            @Override
+            public void onResponse(Call<CategoryResponse<Category>> call, Response<CategoryResponse<Category>> response) {
+                if(response.isSuccessful()){
+                    Log.i("MainActivity", "onResponse: " + response.body().categories);
+                    networkCallback.onSuccessResult(response.body().categories);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CategoryResponse<Category>> call, Throwable throwable) {
+                Log.i("MainActivity", "onFailure: ");
+                networkCallback.onFailureResult(throwable.getMessage());
+            }
+        });
+    }
+
+    public void getMealsByCategoryFromNetwork(NetworkCallback networkCallback, String category) {
+        mealService.getMealsbyCategory(category).enqueue(new Callback<MealResponse<Meal>>() {
+            @Override
+            public void onResponse(Call<MealResponse<Meal>> call, Response<MealResponse<Meal>> response) {
+                if(response.isSuccessful()){
+                    Log.i("MainActivity", "onResponse: " + response.body().meals);
+                    networkCallback.onSuccessResult(response.body().meals);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealResponse<Meal>> call, Throwable throwable) {
+                Log.i("MainActivity", "onFailure: ");
+                networkCallback.onFailureResult(throwable.getMessage());
+            }
+        });
+    }
+
+    public void getMealsByCountryFromNetwork(NetworkCallback networkCallback, String country) {
+        mealService.getMealsbyCountry(country).enqueue(new Callback<MealResponse<Meal>>() {
+            @Override
+            public void onResponse(Call<MealResponse<Meal>> call, Response<MealResponse<Meal>> response) {
+                if(response.isSuccessful()){
+                    Log.i("MainActivity", "onResponse: " + response.body().meals);
+                    networkCallback.onSuccessResult(response.body().meals);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealResponse<Meal>> call, Throwable throwable) {
+                Log.i("MainActivity", "onFailure: ");
+                networkCallback.onFailureResult(throwable.getMessage());
+            }
+        });
+    }
+
+    public void getMealsByIngredientFromNetwork(NetworkCallback networkCallback, String ingredient) {
+        mealService.getMealsbyIngredient(ingredient).enqueue(new Callback<MealResponse<Meal>>() {
+            @Override
+            public void onResponse(Call<MealResponse<Meal>> call, Response<MealResponse<Meal>> response) {
+                if(response.isSuccessful()){
+                    Log.i("MainActivity", "onResponse: " + response.body().meals);
+                    networkCallback.onSuccessResult(response.body().meals);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealResponse<Meal>> call, Throwable throwable) {
+                Log.i("MainActivity", "onFailure: ");
+                networkCallback.onFailureResult(throwable.getMessage());
+            }
+        });
+    }
 }

@@ -9,11 +9,44 @@ public class Category {
     @PrimaryKey
     @NonNull
     @SerializedName("idCategory")
-    public String id;
+    private String id;
     @SerializedName("strCategory")
-    public String category;
+    private String category;
     @SerializedName("strCategoryThumb")
-    public String categoryThumb;
+    private String categoryThumb;
     @SerializedName("strCategoryDescription")
-    public String description;
+    private String description;
+
+    @NonNull
+    public String getId() {
+        return id;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setId(@NonNull String id) {
+        this.id = id;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setCategoryThumb(String categoryThumb) {
+        this.categoryThumb = categoryThumb;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCategoryThumb() {
+        return categoryThumb;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }
