@@ -3,6 +3,7 @@ package com.example.tastytactics.network;
 import android.util.Log;
 
 import com.example.tastytactics.model.Category;
+import com.example.tastytactics.model.Ingredient;
 import com.example.tastytactics.model.Meal;
 
 import retrofit2.Call;
@@ -104,6 +105,24 @@ public class MealsRemoteDataSourceImpl {
         });
     }
 
+    public void getIngredientsFromNetwork(NetworkCallback networkCallback) {
+        mealService.getIngredients().enqueue(new Callback<MealResponse<Ingredient>>() {
+            @Override
+            public void onResponse(Call<MealResponse<Ingredient>> call, Response<MealResponse<Ingredient>> response) {
+                if(response.isSuccessful()){
+                    Log.i("MainActivity", "onResponse: " + response.body().meals);
+                    networkCallback.onSuccessResult(response.body().meals);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealResponse<Ingredient>> call, Throwable throwable) {
+                Log.i("MainActivity", "onFailure: ");
+                networkCallback.onFailureResult(throwable.getMessage());
+            }
+        });
+    }
+
     public void getMealsByIngredientFromNetwork(NetworkCallback networkCallback, String ingredient) {
         mealService.getMealsbyIngredient(ingredient).enqueue(new Callback<MealResponse<Meal>>() {
             @Override
@@ -121,4 +140,41 @@ public class MealsRemoteDataSourceImpl {
             }
         });
     }
+
+    public void getMealsByNameFromNetwork(NetworkCallback networkCallback, String mealName) {
+        mealService.getMealsbyName(mealName).enqueue(new Callback<MealResponse<Meal>>() {
+            @Override
+            public void onResponse(Call<MealResponse<Meal>> call, Response<MealResponse<Meal>> response) {
+                if(response.isSuccessful()){
+                    Log.i("MainActivity", "onResponse: " + response.body().meals);
+                    networkCallback.onSuccessResult(response.body().meals);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealResponse<Meal>> call, Throwable throwable) {
+                Log.i("MainActivity", "onFailure: ");
+                networkCallback.onFailureResult(throwable.getMessage());
+            }
+        });
+    }
+
+    public void getMealByIdFromNetwork(NetworkCallback networkCallback, String id) {
+        mealService.getMealbyID(id).enqueue(new Callback<MealResponse<Meal>>() {
+            @Override
+            public void onResponse(Call<MealResponse<Meal>> call, Response<MealResponse<Meal>> response) {
+                if(response.isSuccessful()){
+                    Log.i("MainActivity", "onResponse: " + response.body().meals);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealResponse<Meal>> call, Throwable throwable) {
+                Log.i("MainActivity", "onFailure: ");
+                networkCallback.onFailureResult(throwable.getMessage());
+            }
+        });
+    }
+
 }

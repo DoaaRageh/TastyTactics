@@ -43,6 +43,11 @@ public class MealsRepositoryImpl {
         remoteSource.getCategoriesFromNetwork(networkCallback);
     }
 
+    public void getIngredients(NetworkCallback networkCallback)
+    {
+        remoteSource.getIngredientsFromNetwork(networkCallback);
+    }
+
     public void getMealsByCategory(NetworkCallback networkCallback, String category)
     {
         remoteSource.getMealsByCategoryFromNetwork(networkCallback, category);
@@ -56,6 +61,16 @@ public class MealsRepositoryImpl {
     public void getMealsByIngredient(NetworkCallback networkCallback, String ingredient)
     {
         remoteSource.getMealsByIngredientFromNetwork(networkCallback, ingredient);
+    }
+
+    public void getMealsByName(NetworkCallback networkCallback, String mealName)
+    {
+        remoteSource.getMealsByNameFromNetwork(networkCallback, mealName);
+    }
+
+    public void getMealsById(NetworkCallback networkCallback, String id)
+    {
+        remoteSource.getMealByIdFromNetwork(networkCallback, id);
     }
 
     public void insertMeal(Meal meal)

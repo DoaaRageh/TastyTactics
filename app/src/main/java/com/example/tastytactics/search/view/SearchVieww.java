@@ -4,7 +4,8 @@ import com.example.tastytactics.model.Meal;
 
 import java.util.List;
 
-public interface SearchView {
+public interface SearchVieww {
     public void showData(List<Meal> meals);
     public void showErrMsg(String error);
+    void navigateToMealDetails(Meal meal);
 }

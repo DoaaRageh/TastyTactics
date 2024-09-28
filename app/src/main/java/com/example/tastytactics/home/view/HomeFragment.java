@@ -29,6 +29,7 @@ import com.example.tastytactics.model.Meal;
 import com.example.tastytactics.model.MealsRepositoryImpl;
 import com.example.tastytactics.network.MealsRemoteDataSourceImpl;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,12 +105,10 @@ public class HomeFragment extends Fragment implements HomeView, OnMealClickListe
 
 
     @Override
-    public void navigateToMealDetails(String title, String instructions, String thumb) {
+    public void navigateToMealDetails(Meal meal) {
         MealDetailsFragment mealDetailsFragment = new MealDetailsFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("title", title);
-        bundle.putString("instruction", instructions);
-        bundle.putString("thumb", thumb);
+        bundle.putSerializable("Meal", meal);
         mealDetailsFragment.setArguments(bundle);
 
         // Replace the current fragment with MealDetailsFragment
@@ -126,14 +125,14 @@ public class HomeFragment extends Fragment implements HomeView, OnMealClickListe
     }
 
     @Override
-    public void onMealClick(String title, String instructions, String thumb) {
-        navigateToMealDetails(title, instructions, thumb);
+    public void onMealClick(Meal meal) {
+        navigateToMealDetails(meal);
     }
 
     @Override
     public void onFavClick(Meal meal) {
         homePresenter.addToFav(meal);
-        Toast.makeText(getContext(),"Product Added To Favourite",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),"Meal Added To Favorite",Toast.LENGTH_SHORT).show();
     }
 
 

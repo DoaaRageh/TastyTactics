@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,17 +24,17 @@ import java.util.List;
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder>{
     private final Context context;
     private static final String TAG = "RecyclerView";
-    private OnMealClickListener listener;
+    private OnSearchClickListener listener;
     private List<Meal> meals;
 
     // Constructor
-    public SearchAdapter(Context _context, List<Meal> _meals, OnMealClickListener _listener) {
+    public SearchAdapter(Context _context, List<Meal> _meals, OnSearchClickListener _listener) {
         context = _context;
         meals = _meals;
         listener = _listener;
     }
 
-    public void setCategories(List<Meal> _meals)
+    public void setMeals(List<Meal> _meals)
     {
         meals = _meals;
     }
@@ -49,9 +50,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         public ViewHolder(View v) {
             super(v);
             layout = v;
-            image = v.findViewById(R.id.mealImage);
-            txtTitle = v.findViewById(R.id.favMealTitle);
-            constraintLayout = v.findViewById(R.id.favMealRow);
+            image = v.findViewById(R.id.searchImage);
+            txtTitle = v.findViewById(R.id.searchTitle);
+            constraintLayout = v.findViewById(R.id.searchRow);
 
         }
     }
@@ -72,9 +73,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 .apply(new RequestOptions().override(200,200)
                         .placeholder(R.drawable.ic_launcher_background)
                         .error(R.drawable.ic_launcher_foreground))
+                .circleCrop()
                 .into(holder.image);
         holder.txtTitle.setText(meals.get(position).getMeal());
-
         Log.i(TAG, "onBindViewHolder: " + meals.get(position).getMeal());
         Log.i(TAG, "***** onBindViewHolder **************");
 
@@ -83,7 +84,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onMealClick(meals.get(position).getMeal(), meals.get(position).getInstructions(), meals.get(position).getMealThumb());
+                listener.onMealClick(meals.get(position));
             }
         });
 

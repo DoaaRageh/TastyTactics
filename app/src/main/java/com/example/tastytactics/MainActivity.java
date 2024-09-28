@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(outIntent);
                 finish();
             }
-        },3000);
+        },5000);
 
     }
 

@@ -9,5 +9,5 @@ public interface HomeView {
     public void showData(List<Meal> meals);
     public void showErrMsg(String error);
     public void showCategories(List<Category> Category);
-    void navigateToMealDetails(String title, String instructions, String thumb);
+    void navigateToMealDetails(Meal meal);
 }

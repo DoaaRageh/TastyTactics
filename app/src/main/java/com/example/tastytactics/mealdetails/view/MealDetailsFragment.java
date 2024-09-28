@@ -3,28 +3,62 @@ package com.example.tastytactics.mealdetails.view;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.tastytactics.R;
+import com.example.tastytactics.db.MealsLocalDataSourceImpl;
+import com.example.tastytactics.home.presenter.CategoryPresenter;
+import com.example.tastytactics.home.presenter.HomePresenter;
+import com.example.tastytactics.home.view.CategoryAdapter;
+import com.example.tastytactics.home.view.HomeAdapter;
 import com.example.tastytactics.mealdetails.presenter.MealDetailsPresenter;
+import com.example.tastytactics.model.Ingredient;
+import com.example.tastytactics.model.Meal;
+import com.example.tastytactics.model.MealsRepositoryImpl;
+import com.example.tastytactics.network.MealsRemoteDataSourceImpl;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link MealDetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MealDetailsFragment extends Fragment implements MealDetailsView{
+public class MealDetailsFragment extends Fragment implements MealDetailsView, OnIngredientClickListener{
+    @Override
+    public void onIngredientClick(Ingredient ingredient) {
+
+    }
+
     public TextView txtSteps;
     public TextView txtTitle;
     public ImageView image;
+    public ImageButton btnAddToFav;
+    private WebView webView;
     private MealDetailsPresenter presenter;
+    public MealDetailsAdapter mealDetailsAdapter;
+    private RecyclerView recyclerView;
+    GridLayoutManager gridLayoutManager;
+    Meal meal;
 
     public MealDetailsFragment() {
         // Required empty public constructor
@@ -44,20 +78,41 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
         View v = inflater.inflate(R.layout.fragment_meal_details, container, false);
         txtSteps = v.findViewById(R.id.txtSteps);
         image = v.findViewById(R.id.imageView);
-        txtTitle = v.findViewById(R.id.favMealTitle);
+        txtTitle = v.findViewById(R.id.mealTitle);
+        /*webView = v.findViewById(R.id.webView);
 
-        presenter = new MealDetailsPresenter(this);
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true); // Enable JavaScript for YouTube embedding*/
+
+        btnAddToFav = v.findViewById(R.id.btnAddToFav);
+        presenter = new MealDetailsPresenter(this, MealsRepositoryImpl.getInstance(MealsRemoteDataSourceImpl.getInstance().getInstance(),
+                MealsLocalDataSourceImpl.getInstance(getContext())));
         if (getArguments() != null) {
-            String title = (String) getArguments().get("title");
-            String instructions = (String) getArguments().get("instruction");
-            String thumb = (String) getArguments().get("thumb");
-            presenter.loadMealDetails(title, instructions, thumb);
+            meal = (Meal) getArguments().get("Meal");
+
+            presenter.loadMealDetails(meal);
         }
+
+        recyclerView = v.findViewById(R.id.ingredientsRecyclerView);
+
+        recyclerView.setHasFixedSize(true);
+
+
+        gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
+
+        mealDetailsAdapter = new MealDetailsAdapter(getContext(), meal.getIngredients(), meal.getMeasures(), this);
+
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setAdapter(mealDetailsAdapter);
+
+        //presenter.getIngredients();
+
         return  v;
     }
 
     @Override
-    public void displayMealDetails(String title, String steps, String thumb) {
+    public void displayMealDetails(Meal meal) {
+        String steps = meal.getInstructions();
         String[] parts = steps.split("\\.");
 
         StringBuilder modifiedText = new StringBuilder();
@@ -71,11 +126,56 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
             }
         }
         txtSteps.setText(modifiedText);
-        txtTitle.setText(title);
-        Glide.with(getContext()).load(thumb)
+        txtTitle.setText(meal.getMeal());
+        Glide.with(getContext()).load(meal.getMealThumb())
                 .apply(new RequestOptions().override(200,200)
                         .placeholder(R.drawable.ic_launcher_background)
                         .error(R.drawable.ic_launcher_foreground))
                 .into(image);
+        btnAddToFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onFavClick(meal);
+            }
+        });
+
+        /*String youtubeUrl = meal.getYoutubeURL();
+        String videoId = getYoutubeVideoId(youtubeUrl);
+
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return !(url.startsWith("https://www.youtube.com/" + "watch") || url.startsWith("https://www.youtube.com/" + "embed/"));
+            }
+        });
+
+        if (videoId != null) {
+            String youtubeEmbedUrl = "https://www.youtube.com/embed/" + videoId;
+            webView.loadUrl(youtubeEmbedUrl);
+        } else {
+            Toast.makeText(getContext(), "Invalid YouTube URL", Toast.LENGTH_SHORT).show();
+        }*/
+    }
+
+    @Override
+    public void showErrMsg(String error) {
+        Toast.makeText(getContext(), "An Error Occurred", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFavClick(Meal meal) {
+        presenter.addToFav(meal);
+        Toast.makeText(getContext(),"Meal Added To Favorite",Toast.LENGTH_SHORT).show();
+    }
+
+    private String getYoutubeVideoId(String youtubeUrl) {
+        String videoId = null;
+        String pattern = "^(?:https?://)?(?:www\\.)?(?:youtube\\.com/watch\\?v=|youtu\\.be/)([\\w-]{11})";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(youtubeUrl);
+        if (matcher.find()) {
+            videoId = matcher.group(1); // Extracts the video ID
+        }
+        return videoId;
     }
 }

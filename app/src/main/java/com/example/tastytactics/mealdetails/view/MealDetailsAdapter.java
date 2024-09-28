@@ -1,4 +1,4 @@
-package com.example.tastytactics.home.view;
+package com.example.tastytactics.mealdetails.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -6,8 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,26 +15,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.tastytactics.R;
+import com.example.tastytactics.model.Ingredient;
 import com.example.tastytactics.model.Meal;
 
 import java.util.List;
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
+public class MealDetailsAdapter extends RecyclerView.Adapter<MealDetailsAdapter.ViewHolder>{
     private final Context context;
-    private List<Meal> meals;
     private static final String TAG = "RecyclerView";
-    private OnMealClickListener listener;
+    private OnIngredientClickListener listener;
+    private List<String> ingredients;
+    private List<String> measures;
+    String imageUrl;
 
     // Constructor
-    public HomeAdapter(Context _context, List<Meal> _meals, OnMealClickListener _listener) {
+    public MealDetailsAdapter(Context _context, List<String> _ingredients, List<String> _measures, OnIngredientClickListener _listener) {
         context = _context;
-        meals = _meals;
+        ingredients = _ingredients;
+        measures = _measures;
         listener = _listener;
-    }
-
-    public void setList(List<Meal> _meals)
-    {
-        meals = _meals;
     }
 
 
@@ -44,52 +41,45 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView image;
         public TextView txtTitle;
-        public Button btnAddToPlan;
-        public ImageButton btnAddToFav;
+        public TextView txtMeasure;
         public ConstraintLayout constraintLayout;
         public View layout;
-
 
 
         public ViewHolder(View v) {
             super(v);
             layout = v;
-            image = v.findViewById(R.id.mealImage);
-            txtTitle = v.findViewById(R.id.mealTitle);
-            btnAddToPlan = v.findViewById(R.id.btnAddToPlan);
-            btnAddToFav = v.findViewById(R.id.btnAddToFav);
-            constraintLayout = v.findViewById(R.id.mealRow);
+            image = v.findViewById(R.id.ingredientImage);
+            txtTitle = v.findViewById(R.id.ingredientTitle);
+            txtMeasure = v.findViewById(R.id.txtMeasure);
+            constraintLayout = v.findViewById(R.id.ingredientRow);
 
         }
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup recyclerView, int viewType) {
+    public MealDetailsAdapter.ViewHolder onCreateViewHolder(ViewGroup recyclerView, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(recyclerView.getContext());
-        View v = inflater.inflate(R.layout.meal_layout, recyclerView, false);
-        ViewHolder vh = new ViewHolder(v);
+        View v = inflater.inflate(R.layout.ingredient_layout, recyclerView, false);
+        MealDetailsAdapter.ViewHolder vh = new MealDetailsAdapter.ViewHolder(v);
         Log.i(TAG, "===== onCreateViewHolder =====");
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
-        Glide.with(context).load(meals.get(position).getMealThumb())
+    public void onBindViewHolder(MealDetailsAdapter.ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
+
+        imageUrl = "https://www.themealdb.com/images/ingredients/" + ingredients.get(position) + ".png";
+        Glide.with(context).load(imageUrl)
                 .apply(new RequestOptions().override(200,200)
                         .placeholder(R.drawable.ic_launcher_background)
                         .error(R.drawable.ic_launcher_foreground))
                 .into(holder.image);
-        holder.txtTitle.setText(meals.get(position).getMeal());
+        holder.txtTitle.setText(ingredients.get(position));
+        holder.txtMeasure.setText(measures.get(position));
 
-        holder.btnAddToFav.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onFavClick(meals.get(position));
-            }
-        });
-
-        Log.i(TAG, "onBindViewHolder: " + meals.get(position).getMeal());
+        Log.i(TAG, "onBindViewHolder: " + ingredients.get(position));
         Log.i(TAG, "***** onBindViewHolder **************");
 
 
@@ -97,7 +87,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onMealClick(meals.get(position));
+                //listener.onIngredientClick(ingredients.get(position).getCategory());
             }
         });
 
@@ -105,6 +95,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
 
     @Override
     public int getItemCount() {
-        return meals.size();
+        return ingredients.size();
     }
 }
+
