@@ -13,4 +13,6 @@
     <string name="searchByCountry">Country</string>
     <string name="searchByIngredient">Ingredient</string>
     <string name="removeFromFav">Remove From Fav</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

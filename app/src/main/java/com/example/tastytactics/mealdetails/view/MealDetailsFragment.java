@@ -57,14 +57,14 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView, On
     private MealDetailsPresenter presenter;
     public MealDetailsAdapter mealDetailsAdapter;
     private RecyclerView recyclerView;
-    GridLayoutManager gridLayoutManager;
+    //GridLayoutManager gridLayoutManager;
+    LinearLayoutManager layoutManager;
+
     Meal meal;
 
-    public MealDetailsFragment() {
-        // Required empty public constructor
+    public MealDetailsFragment(Meal _meal) {
+        meal=_meal;
     }
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,17 +79,17 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView, On
         txtSteps = v.findViewById(R.id.txtSteps);
         image = v.findViewById(R.id.imageView);
         txtTitle = v.findViewById(R.id.mealTitle);
-        /*webView = v.findViewById(R.id.webView);
+        webView = v.findViewById(R.id.webView);
 
         WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true); // Enable JavaScript for YouTube embedding*/
+        webSettings.setJavaScriptEnabled(true);
+        webView.setWebViewClient(new WebViewClient());
 
         btnAddToFav = v.findViewById(R.id.btnAddToFav);
         presenter = new MealDetailsPresenter(this, MealsRepositoryImpl.getInstance(MealsRemoteDataSourceImpl.getInstance().getInstance(),
                 MealsLocalDataSourceImpl.getInstance(getContext())));
-        if (getArguments() != null) {
-            meal = (Meal) getArguments().get("Meal");
 
+        if(meal != null) {
             presenter.loadMealDetails(meal);
         }
 
@@ -98,11 +98,13 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView, On
         recyclerView.setHasFixedSize(true);
 
 
-        gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
+        //gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
 
+        layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(RecyclerView.HORIZONTAL);
         mealDetailsAdapter = new MealDetailsAdapter(getContext(), meal.getIngredients(), meal.getMeasures(), this);
 
-        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mealDetailsAdapter);
 
         //presenter.getIngredients();
@@ -139,22 +141,15 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView, On
             }
         });
 
-        /*String youtubeUrl = meal.getYoutubeURL();
+        String youtubeUrl = meal.getYoutubeURL();
         String videoId = getYoutubeVideoId(youtubeUrl);
-
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return !(url.startsWith("https://www.youtube.com/" + "watch") || url.startsWith("https://www.youtube.com/" + "embed/"));
-            }
-        });
 
         if (videoId != null) {
             String youtubeEmbedUrl = "https://www.youtube.com/embed/" + videoId;
             webView.loadUrl(youtubeEmbedUrl);
         } else {
             Toast.makeText(getContext(), "Invalid YouTube URL", Toast.LENGTH_SHORT).show();
-        }*/
+        }
     }
 
     @Override
@@ -169,12 +164,10 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView, On
     }
 
     private String getYoutubeVideoId(String youtubeUrl) {
-        String videoId = null;
-        String pattern = "^(?:https?://)?(?:www\\.)?(?:youtube\\.com/watch\\?v=|youtu\\.be/)([\\w-]{11})";
-        Pattern compiledPattern = Pattern.compile(pattern);
-        Matcher matcher = compiledPattern.matcher(youtubeUrl);
-        if (matcher.find()) {
-            videoId = matcher.group(1); // Extracts the video ID
+        String videoId = "";
+        if(youtubeUrl != null && youtubeUrl.contains("v=")) {
+            String[] parts = youtubeUrl.split("v=");
+            videoId = parts[1].split("&")[0];
         }
         return videoId;
     }

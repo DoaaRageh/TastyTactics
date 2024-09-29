@@ -106,10 +106,7 @@ public class HomeFragment extends Fragment implements HomeView, OnMealClickListe
 
     @Override
     public void navigateToMealDetails(Meal meal) {
-        MealDetailsFragment mealDetailsFragment = new MealDetailsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("Meal", meal);
-        mealDetailsFragment.setArguments(bundle);
+        MealDetailsFragment mealDetailsFragment = new MealDetailsFragment(meal);
 
         // Replace the current fragment with MealDetailsFragment
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();

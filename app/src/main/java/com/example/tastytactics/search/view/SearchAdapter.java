@@ -26,6 +26,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     private static final String TAG = "RecyclerView";
     private OnSearchClickListener listener;
     private List<Meal> meals;
+    public  boolean byId=false;
 
     // Constructor
     public SearchAdapter(Context _context, List<Meal> _meals, OnSearchClickListener _listener) {
@@ -84,6 +85,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                byId=true;
                 listener.onMealClick(meals.get(position));
             }
         });

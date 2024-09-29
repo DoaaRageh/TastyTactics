@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +39,7 @@ public class SearchFragment extends Fragment implements SearchVieww, OnSearchCli
     private SearchPresenter searchPresenter;
     private RecyclerView searchRecyclerView;
     LinearLayoutManager layoutManager;
-    public ImageButton btnSearch;
-    private EditText editSearch;
+
     int position = 0;
     public SearchFragment() {
         // Required empty public constructor
@@ -58,8 +58,7 @@ public class SearchFragment extends Fragment implements SearchVieww, OnSearchCli
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_search, container, false);
 
-        //editSearch = v.findViewById(R.id.editSearch);
-        //btnSearch = v.findViewById(R.id.searchButton);
+
 
 
         searchRecyclerView = v.findViewById(R.id.searchRecyclerView);
@@ -118,12 +117,10 @@ public class SearchFragment extends Fragment implements SearchVieww, OnSearchCli
             }
         });
 
-// Set a listener for when the user submits their query (presses Enter)
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Handle Enter key press action here (e.g., start searching)
-                // `query` contains the text entered by the user
+
                 switch (position) {
                     case 0:
                         searchPresenter.serchByMealName(searchView.getQuery().toString());
@@ -154,11 +151,15 @@ public class SearchFragment extends Fragment implements SearchVieww, OnSearchCli
 
     @Override
     public void showData(List<Meal> meals) {
-        for(Meal meal: meals) {
-
+        if(searchAdapter.byId){
+            navigateToMealDetails(meals.get(0));
+            Log.i("byId", "showData: ");
+            searchAdapter.byId = false;
         }
-        searchAdapter.setMeals(meals);
-        searchAdapter.notifyDataSetChanged();
+        else {
+            searchAdapter.setMeals(meals);
+            searchAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -168,15 +169,12 @@ public class SearchFragment extends Fragment implements SearchVieww, OnSearchCli
 
     @Override
     public void onMealClick(Meal meal) {
-        navigateToMealDetails(meal);
+        searchPresenter.getMealById(meal.getId());
     }
 
     @Override
     public void navigateToMealDetails(Meal meal) {
-        MealDetailsFragment mealDetailsFragment = new MealDetailsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("Meal", meal);
-        mealDetailsFragment.setArguments(bundle);
+        MealDetailsFragment mealDetailsFragment = new MealDetailsFragment(meal);
 
         // Replace the current fragment with MealDetailsFragment
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();

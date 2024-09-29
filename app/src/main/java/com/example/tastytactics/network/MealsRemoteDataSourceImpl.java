@@ -165,6 +165,7 @@ public class MealsRemoteDataSourceImpl {
             public void onResponse(Call<MealResponse<Meal>> call, Response<MealResponse<Meal>> response) {
                 if(response.isSuccessful()){
                     Log.i("MainActivity", "onResponse: " + response.body().meals);
+                    networkCallback.onSuccessResult(response.body().meals);
 
                 }
             }

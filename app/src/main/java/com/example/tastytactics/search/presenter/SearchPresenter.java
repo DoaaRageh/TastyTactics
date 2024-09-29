@@ -10,7 +10,6 @@ import java.util.List;
 public class SearchPresenter implements NetworkCallback<Meal> {
     private MealsRepositoryImpl repo;
     private SearchVieww view;
-    private boolean isMealDetailRequest = false;
 
     public SearchPresenter(SearchVieww _view, MealsRepositoryImpl _repo) {
         view = _view;
@@ -44,7 +43,6 @@ public class SearchPresenter implements NetworkCallback<Meal> {
     }
 
     public void getMealById(String id) {
-        isMealDetailRequest = true;
         repo.getMealsById(this, id);
     }
 }
