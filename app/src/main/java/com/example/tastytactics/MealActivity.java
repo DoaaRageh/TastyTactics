@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.tastytactics.favmeals.view.FavMealsFragment;
 import com.example.tastytactics.home.view.HomeFragment;
+import com.example.tastytactics.plan.view.PlanFragment;
 import com.example.tastytactics.search.view.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -23,6 +24,7 @@ public class MealActivity extends AppCompatActivity {
     private HomeFragment homeFragment;
     private SearchFragment searchFragment;
     private FavMealsFragment favMealsFragment;
+    private PlanFragment planFragment;
     private Fragment fragment;
     FragmentTransaction trns;
     @Override
@@ -57,6 +59,10 @@ public class MealActivity extends AppCompatActivity {
                     trns.commit();
                     return true;
                 } else if (id == R.id.item3) {
+                    trns = mgr.beginTransaction();
+                    planFragment = new PlanFragment();
+                    trns.replace(R.id.fragmentContainer, planFragment, "PlanFragment");
+                    trns.commit();
                     return true;
                 } else if (id == R.id.item4) {
                     trns = mgr.beginTransaction();

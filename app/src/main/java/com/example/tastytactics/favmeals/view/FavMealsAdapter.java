@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,7 +19,6 @@ import com.example.tastytactics.R;
 import com.example.tastytactics.model.Meal;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FavMealsAdapter extends RecyclerView.Adapter<FavMealsAdapter.ViewHolder>{
@@ -48,10 +46,10 @@ public class FavMealsAdapter extends RecyclerView.Adapter<FavMealsAdapter.ViewHo
         public ViewHolder(View v) {
             super(v);
             layout = v;
-            image = v.findViewById(R.id.favMealImage);
+            image = v.findViewById(R.id.planMealImage);
             txtTitle = v.findViewById(R.id.favMealTitle);
             btnRemoveFromFav = v.findViewById(R.id.btnAddRemoveFav);
-            constraintLayout = v.findViewById(R.id.favMealRow);
+            constraintLayout = v.findViewById(R.id.planMealRow);
         }
     }
 

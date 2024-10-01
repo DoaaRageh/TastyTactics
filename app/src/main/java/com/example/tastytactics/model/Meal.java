@@ -12,12 +12,11 @@ import java.util.Arrays;
 import java.util.List;
 
 @Entity(tableName = "meal_table")
-public class Meal implements Serializable {
+public class Meal {
 
-    @SerializedName("idMeal")
     @PrimaryKey
     @NonNull
-    private String id;
+    private String idMeal;
     @SerializedName("strMeal")
     private String meal;
     @SerializedName("strDrinkAlternate")
@@ -114,6 +113,13 @@ public class Meal implements Serializable {
     private String measure19;
     @SerializedName("strMeasure20")
     private String measure20;
+    @ColumnInfo(name = "strSource")
+    private String source;
+    @ColumnInfo(name = "strImageSource")
+    private String imageSource;
+    @ColumnInfo(name = "strCreativeCommonsConfirmed")
+    private String creativeCommonsConfirmed;
+    private String dateModified;
 
     public List<String> getIngredients()
     {
@@ -128,8 +134,8 @@ public class Meal implements Serializable {
                 measure9, measure10, measure11, measure12, measure13, measure14, measure15, measure16,
                 measure17, measure18, measure19, measure20);
     }
-    public String getId() {
-        return id;
+    public String getIdMeal() {
+        return idMeal;
     }
 
     public String getMeal() {
@@ -200,8 +206,8 @@ public class Meal implements Serializable {
         return ingredient9;
     }
 
-    public void setId(@NonNull String id) {
-        this.id = id;
+    public void setIdMeal(@NonNull String id) {
+        this.idMeal = id;
     }
 
     public void setMeal(String meal) {
@@ -408,6 +414,7 @@ public class Meal implements Serializable {
         this.creativeCommonsConfirmed = creativeCommonsConfirmed;
     }
 
+
     public void setDateModified(String dateModified) {
         this.dateModified = dateModified;
     }
@@ -551,13 +558,5 @@ public class Meal implements Serializable {
     public String getDateModified() {
         return dateModified;
     }
-
-    @ColumnInfo(name = "strSource")
-    private String source;
-    @ColumnInfo(name = "strImageSource")
-    private String imageSource;
-    @ColumnInfo(name = "strCreativeCommonsConfirmed")
-    private String creativeCommonsConfirmed;
-    private String dateModified;
 
 }

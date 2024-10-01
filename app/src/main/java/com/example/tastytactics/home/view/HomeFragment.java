@@ -1,5 +1,6 @@
 package com.example.tastytactics.home.view;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -27,11 +28,18 @@ import com.example.tastytactics.mealdetails.view.MealDetailsFragment;
 import com.example.tastytactics.model.Category;
 import com.example.tastytactics.model.Meal;
 import com.example.tastytactics.model.MealsRepositoryImpl;
+import com.example.tastytactics.model.Plan;
 import com.example.tastytactics.network.MealsRemoteDataSourceImpl;
+import com.example.tastytactics.plan.view.DateFragment;
+import com.example.tastytactics.plan.view.PlanFragment;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class HomeFragment extends Fragment implements HomeView, OnMealClickListener, OnCategoryClickListener {
 
@@ -132,6 +140,13 @@ public class HomeFragment extends Fragment implements HomeView, OnMealClickListe
         Toast.makeText(getContext(),"Meal Added To Favorite",Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onCalenderClick(Meal meal) {
+        DateFragment dateFragment = new DateFragment(meal);
+        dateFragment.show(getChildFragmentManager(), "DateFragment");
+
+
+    }
 
     @Override
     public void onCategoryClick(String categoryName) {

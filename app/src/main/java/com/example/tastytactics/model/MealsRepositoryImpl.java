@@ -6,6 +6,7 @@ import com.example.tastytactics.db.MealsLocalDataSourceImpl;
 import com.example.tastytactics.network.MealsRemoteDataSourceImpl;
 import com.example.tastytactics.network.NetworkCallback;
 
+import java.util.Date;
 import java.util.List;
 
 public class MealsRepositoryImpl {
@@ -33,6 +34,15 @@ public class MealsRepositoryImpl {
         return localSource.getStoredMeals();
     }
 
+    public LiveData<List<Plan>> getPlannedMeals()
+    {
+        return localSource.getPlannedMeals();
+    }
+
+    public LiveData<List<Plan>> getPlanMeals(Date date)
+    {
+        return localSource.getPlanMeals(date);
+    }
     public void getRandomMeal(NetworkCallback networkCallback)
     {
         remoteSource.getRandomMealFromNetwork(networkCallback);
@@ -75,11 +85,23 @@ public class MealsRepositoryImpl {
 
     public void insertMeal(Meal meal)
     {
-        localSource.insertMeal(meal);
+        localSource.insertMealToFav(meal);
+    }
+
+    public void insertMealToPlan(Plan meal, Date date)
+    {
+        localSource.insertMealToPlan(meal, date);
     }
 
     public void deleteMeal(Meal meal)
     {
         localSource.deleteMeal(meal);
     }
+
+    public void deleteMealFromPlan(Plan meal)
+    {
+        localSource.deleteMealFromPlan(meal);
+    }
+
+
 }

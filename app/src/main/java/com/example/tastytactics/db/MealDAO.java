@@ -8,7 +8,9 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.example.tastytactics.model.Meal;
+import com.example.tastytactics.model.Plan;
 
+import java.util.Date;
 import java.util.List;
 
 @Dao
@@ -24,6 +26,15 @@ public interface MealDAO {
     @Delete
     void deleteMeal(Meal product);
 
+    @Query("SELECT * FROM plan_table")
+    LiveData<List<Plan>>getAllPlannedMeals();
 
+    @Query("SELECT * FROM plan_table WHERE date = :planDate")
+    LiveData<List<Plan>>getAllPlanMeals(Date planDate);
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertMealToPlan(Plan product);
+
+    @Delete
+    void deleteMealFromPlan(Plan product);
 }

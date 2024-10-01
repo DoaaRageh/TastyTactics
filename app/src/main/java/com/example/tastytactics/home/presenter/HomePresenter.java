@@ -4,8 +4,10 @@ import com.example.tastytactics.home.view.HomeView;
 import com.example.tastytactics.model.Category;
 import com.example.tastytactics.model.Meal;
 import com.example.tastytactics.model.MealsRepositoryImpl;
+import com.example.tastytactics.model.Plan;
 import com.example.tastytactics.network.NetworkCallback;
 
+import java.util.Date;
 import java.util.List;
 
 public class HomePresenter implements NetworkCallback<Meal>{
@@ -35,5 +37,10 @@ public class HomePresenter implements NetworkCallback<Meal>{
     public void addToFav(Meal meal)
     {
         repo.insertMeal(meal);
+    }
+
+    public void addToPlan(Plan meal, Date date)
+    {
+        repo.insertMealToPlan(meal,date);
     }
 }

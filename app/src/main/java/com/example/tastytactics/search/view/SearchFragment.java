@@ -169,7 +169,7 @@ public class SearchFragment extends Fragment implements SearchVieww, OnSearchCli
 
     @Override
     public void onMealClick(Meal meal) {
-        searchPresenter.getMealById(meal.getId());
+        searchPresenter.getMealById(meal.getIdMeal());
     }
 
     @Override
