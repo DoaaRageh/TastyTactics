@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.example.tastytactics.R;
 import com.example.tastytactics.db.MealsLocalDataSourceImpl;
 import com.example.tastytactics.favmeals.presenter.FavMealsPresenter;
+import com.example.tastytactics.mealdetails.view.MealDetailsFragment;
 import com.example.tastytactics.model.Meal;
 import com.example.tastytactics.model.MealsRepositoryImpl;
 import com.example.tastytactics.network.MealsRemoteDataSourceImpl;
@@ -84,6 +86,17 @@ public class FavMealsFragment extends Fragment implements FavMealsView, OnFavCli
     public void onFavMealClick(Meal meal) {
         favPresenter.removeFromFav(meal);
         Toast.makeText(getContext(), "Meal Removed From Favorite", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onMealClick(Meal meal) {
+        MealDetailsFragment mealDetailsFragment = new MealDetailsFragment(meal);
+
+        // Replace the current fragment with MealDetailsFragment
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentContainer, mealDetailsFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @Override

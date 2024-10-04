@@ -6,6 +6,7 @@ import com.example.tastytactics.model.Meal;
 import com.example.tastytactics.model.MealsRepositoryImpl;
 import com.example.tastytactics.model.Plan;
 import com.example.tastytactics.network.NetworkCallback;
+import com.example.tastytactics.plan.view.PlanAdapter;
 import com.example.tastytactics.plan.view.PlanView;
 import com.example.tastytactics.search.view.SearchVieww;
 
@@ -31,10 +32,6 @@ public class PlanPresenter implements NetworkCallback<Plan> {
         view.showErrMsg(errorMsg);
     }
 
-    public LiveData<List<Plan>> getMeals()
-    {
-        return repo.getPlannedMeals();
-    }
 
     public LiveData<List<Plan>> getPlannedMeals(Date date)
     {
@@ -46,8 +43,8 @@ public class PlanPresenter implements NetworkCallback<Plan> {
         repo.insertMealToPlan(meal,date);
     }
 
-    public void removeFromPlan(Meal meal)
+    public void removeFromPlan(Plan meal)
     {
-        repo.deleteMeal(meal);
+        repo.deleteMealFromPlan(meal);
     }
 }

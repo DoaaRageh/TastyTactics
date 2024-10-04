@@ -32,21 +32,26 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/txtPlanTitle"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="5dp"
-                    android:textSize="25sp" />
+                    android:layout_weight="4"
+                    android:textSize="20sp" />
 
-                <TextView
-                    android:id="@+id/txtDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                <ImageButton
+                    android:id="@+id/btnRemovePlan"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    app:srcCompat="@drawable/trash" />
 
             </LinearLayout>
 

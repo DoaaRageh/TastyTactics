@@ -120,28 +120,30 @@ public class SearchFragment extends Fragment implements SearchVieww, OnSearchCli
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
                 switch (position) {
                     case 0:
-                        searchPresenter.serchByMealName(searchView.getQuery().toString());
+                        searchPresenter.serchByMealName(query);
                         break;
                     case 1:
-                        searchPresenter.serchByCountry(searchView.getQuery().toString());
+                        searchPresenter.serchByCountry(query);
                         break;
                     case 2:
-                        searchPresenter.serchByIngredient(searchView.getQuery().toString());
+                        searchPresenter.serchByIngredient(query);
                         break;
                     case 3:
-                        searchPresenter.serchByCategory(searchView.getQuery().toString());
+                        searchPresenter.serchByCategory(query);
                         break;
                 }
-                //Toast.makeText(getContext(), "Search query: " + query, Toast.LENGTH_SHORT).show();
                 return false;
             }
-
             @Override
-            public boolean onQueryTextChange(String newText) {
+            public boolean onQueryTextChange(String query) {
                 // Handle text change if needed
+                switch (position) {
+                    case 0:
+                        searchPresenter.serchByMealName(query);
+                        break;
+                }
                 return false;
             }
         });
@@ -157,8 +159,13 @@ public class SearchFragment extends Fragment implements SearchVieww, OnSearchCli
             searchAdapter.byId = false;
         }
         else {
-            searchAdapter.setMeals(meals);
-            searchAdapter.notifyDataSetChanged();
+            if(meals!=null) {
+                searchAdapter.setMeals(meals);
+                searchAdapter.notifyDataSetChanged();
+            }
+            else {
+                Toast.makeText(getContext(), "No Meals Found", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

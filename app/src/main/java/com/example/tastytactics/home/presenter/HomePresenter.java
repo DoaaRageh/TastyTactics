@@ -1,10 +1,10 @@
 package com.example.tastytactics.home.presenter;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.tastytactics.home.view.HomeView;
-import com.example.tastytactics.model.Category;
 import com.example.tastytactics.model.Meal;
 import com.example.tastytactics.model.MealsRepositoryImpl;
-import com.example.tastytactics.model.Plan;
 import com.example.tastytactics.network.NetworkCallback;
 
 import java.util.Date;
@@ -39,8 +39,14 @@ public class HomePresenter implements NetworkCallback<Meal>{
         repo.insertMeal(meal);
     }
 
-    public void addToPlan(Plan meal, Date date)
+    public void removeFromFav(Meal meal)
     {
-        repo.insertMealToPlan(meal,date);
+        repo.deleteMeal(meal);
     }
+
+    public LiveData<Meal> getMealById(String id)
+    {
+        return repo.getMealById(id);
+    }
+
 }

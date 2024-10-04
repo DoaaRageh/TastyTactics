@@ -1,6 +1,8 @@
 package com.example.tastytactics.mealdetails.presenter;
 
 
+import androidx.lifecycle.LiveData;
+
 import com.example.tastytactics.mealdetails.view.MealDetailsView;
 import com.example.tastytactics.model.Ingredient;
 import com.example.tastytactics.model.Meal;
@@ -39,5 +41,15 @@ public class MealDetailsPresenter{
     public void addToFav(Meal meal)
     {
         repo.insertMeal(meal);
+    }
+
+    public void removeFromFav(Meal meal)
+    {
+        repo.deleteMeal(meal);
+    }
+
+    public LiveData<Meal> getMealById(String id)
+    {
+        return repo.getMealById(id);
     }
 }

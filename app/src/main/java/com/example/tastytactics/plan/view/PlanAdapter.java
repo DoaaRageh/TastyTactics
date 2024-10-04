@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,7 +41,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder>{
         public ImageView image;
         public TextView txtTitle;
         public TextView txtDate;
-        public Button btnRemoveFromFav;
+        public ImageButton btnRemoveFromPlan;
         public ConstraintLayout constraintLayout;
         public View layout;
 
@@ -50,8 +51,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder>{
             layout = v;
             image = v.findViewById(R.id.planMealImage);
             txtTitle = v.findViewById(R.id.txtPlanTitle);
-            txtDate = v.findViewById(R.id.txtDate);
-            btnRemoveFromFav = v.findViewById(R.id.btnAddRemoveFav);
+            btnRemoveFromPlan = v.findViewById(R.id.btnRemovePlan);
             constraintLayout = v.findViewById(R.id.planMealRow);
         }
     }
@@ -76,12 +76,24 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder>{
         //holder.txtTitle.setText(meals.get(position).getMeal());
         holder.txtTitle.setText(meals.get(position).getMeal().getMeal());
 
+        holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onMealClick(meals.get(position).getMeal());
+            }
+        });
+
+        holder.btnRemoveFromPlan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onPlannedMealClick(meals.get(position));
+            }
+        });
+
+
+
         Log.i(TAG, "onBindViewHolder: " + meals.get(position).getMeal());
         Log.i(TAG, "***** onBindViewHolder **************");
-
-
-
-
 
     }
 

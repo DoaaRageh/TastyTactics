@@ -4,6 +4,8 @@ import com.example.tastytactics.model.Ingredient;
 import com.example.tastytactics.model.Meal;
 
 public interface OnIngredientClickListener {
-    void onIngredientClick(Ingredient ingredient);
-    void onFavClick(Meal meal);
+    void onIngredientClick(String ingredient);
+    void addToFav(Meal meal);
+    void removeFromFav(Meal meal);
+    void onCalenderClick(Meal meal);
 }

@@ -1,8 +1,12 @@
 package com.example.tastytactics.mealdetails.view;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +17,7 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +26,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.tastytactics.R;
+import com.example.tastytactics.categorymeals.view.CategoryMealsFragment;
 import com.example.tastytactics.db.MealsLocalDataSourceImpl;
 import com.example.tastytactics.home.presenter.CategoryPresenter;
 import com.example.tastytactics.home.presenter.HomePresenter;
@@ -31,6 +37,7 @@ import com.example.tastytactics.model.Ingredient;
 import com.example.tastytactics.model.Meal;
 import com.example.tastytactics.model.MealsRepositoryImpl;
 import com.example.tastytactics.network.MealsRemoteDataSourceImpl;
+import com.example.tastytactics.plan.view.DateFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,21 +51,19 @@ import java.util.regex.Pattern;
  * create an instance of this fragment.
  */
 public class MealDetailsFragment extends Fragment implements MealDetailsView, OnIngredientClickListener{
-    @Override
-    public void onIngredientClick(Ingredient ingredient) {
-
-    }
 
     public TextView txtSteps;
     public TextView txtTitle;
     public ImageView image;
     public ImageButton btnAddToFav;
+    public Button btnAddToPlan;
     private WebView webView;
     private MealDetailsPresenter presenter;
     public MealDetailsAdapter mealDetailsAdapter;
     private RecyclerView recyclerView;
     //GridLayoutManager gridLayoutManager;
     LinearLayoutManager layoutManager;
+    private LiveData<Meal> isFav;
 
     Meal meal;
 
@@ -80,6 +85,14 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView, On
         image = v.findViewById(R.id.imageView);
         txtTitle = v.findViewById(R.id.mealTitle);
         webView = v.findViewById(R.id.webView);
+        btnAddToPlan = v.findViewById(R.id.btnAddToPlan);
+
+        btnAddToPlan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onCalenderClick(meal);
+            }
+        });
 
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -114,6 +127,19 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView, On
 
     @Override
     public void displayMealDetails(Meal meal) {
+        isFav = presenter.getMealById(meal.getIdMeal());
+        isFav.observe(getViewLifecycleOwner(), new Observer<Meal>() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onChanged(Meal _meal) {
+                if(_meal == null) {
+                    btnAddToFav.setImageResource(R.drawable.heartt);
+                }
+                else {
+                    btnAddToFav.setImageResource(R.drawable.hearttt);
+                }
+            }
+        });
         String steps = meal.getInstructions();
         String[] parts = steps.split("\\.");
 
@@ -137,7 +163,13 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView, On
         btnAddToFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onFavClick(meal);
+                if (isFav.getValue() == null) {
+                    addToFav(meal);
+                    btnAddToFav.setImageResource(R.drawable.hearttt);  // Change to heart
+                } else {
+                    removeFromFav(meal);
+                    btnAddToFav.setImageResource(R.drawable.heartt);  // Change to like
+                }
             }
         });
 
@@ -158,9 +190,34 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView, On
     }
 
     @Override
-    public void onFavClick(Meal meal) {
+    public void addToFav(Meal meal) {
         presenter.addToFav(meal);
-        Toast.makeText(getContext(),"Meal Added To Favorite",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(),"Meal Added To Favorite",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void removeFromFav(Meal meal) {
+        presenter.removeFromFav(meal);
+        //Toast.makeText(getContext(),"Meal Removed From Favorite",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCalenderClick(Meal meal) {
+        DateFragment dateFragment = new DateFragment(meal);
+        dateFragment.show(getChildFragmentManager(), "DateFragment");
+
+
+    }
+
+    @Override
+    public void onIngredientClick(String ingredientName) {
+        CategoryMealsFragment categoryMealsFragment = new CategoryMealsFragment(ingredientName, "i");
+
+        // Replace the current fragment with MealDetailsFragment
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentContainer, categoryMealsFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     private String getYoutubeVideoId(String youtubeUrl) {

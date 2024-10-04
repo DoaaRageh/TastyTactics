@@ -34,6 +34,9 @@ public interface MealService {
     @GET("list.php?i=list")
     Call<MealResponse<Ingredient>> getIngredients();
 
+    @GET("list.php?a=list")
+    Call<MealResponse<Meal>> getCountries();
+
     /*@GET("list.php?c=list")
     Call<MealResponse<Category>> getCategoriess();*/
 

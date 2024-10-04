@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,7 +39,7 @@ public class FavMealsAdapter extends RecyclerView.Adapter<FavMealsAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView image;
         public TextView txtTitle;
-        public Button btnRemoveFromFav;
+        public ImageButton btnRemoveFromFav;
         public ConstraintLayout constraintLayout;
         public View layout;
 
@@ -75,7 +76,12 @@ public class FavMealsAdapter extends RecyclerView.Adapter<FavMealsAdapter.ViewHo
         Log.i(TAG, "onBindViewHolder: " + meals.get(position).getMeal());
         Log.i(TAG, "***** onBindViewHolder **************");
 
-
+        holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onMealClick(meals.get(position));
+            }
+        });
 
         holder.btnRemoveFromFav.setOnClickListener(new View.OnClickListener() {
             @Override

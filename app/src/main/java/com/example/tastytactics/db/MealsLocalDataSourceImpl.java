@@ -37,15 +37,15 @@ public class MealsLocalDataSourceImpl {
         return storedMeals;
     }
 
-    public LiveData<List<Plan>> getPlannedMeals() {
-
-        return plannedMeals;
-    }
-
-    public LiveData<List<Plan>> getPlanMeals(Date date) {
+    public LiveData<List<Plan>> getPlannedMeals(Date date) {
 
         plannedMeals = mealDAO.getAllPlanMeals(date);
         return plannedMeals;
+    }
+
+    public LiveData<Meal> getMealById(String id) {
+
+        return mealDAO.getMealById(id);
     }
 
     public void deleteMeal(Meal meal){

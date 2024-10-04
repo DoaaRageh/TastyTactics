@@ -69,30 +69,26 @@ public class MealDetailsAdapter extends RecyclerView.Adapter<MealDetailsAdapter.
 
     @Override
     public void onBindViewHolder(MealDetailsAdapter.ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
+         imageUrl = "https://www.themealdb.com/images/ingredients/" + ingredients.get(position) + ".png";
+        Glide.with(context).load(imageUrl)
+                .apply(new RequestOptions().override(200,200)
+                        .placeholder(R.drawable.ic_launcher_background)
+                        .error(R.drawable.ic_launcher_foreground))
+                .into(holder.image);
+        holder.txtTitle.setText(ingredients.get(position));
+        holder.txtMeasure.setText(measures.get(position));
 
-        if(ingredients.get(position) != null && !ingredients.get(position).isEmpty()) {
-            imageUrl = "https://www.themealdb.com/images/ingredients/" + ingredients.get(position) + ".png";
-            Glide.with(context).load(imageUrl)
-                    .apply(new RequestOptions().override(200,200)
-                            .placeholder(R.drawable.ic_launcher_background)
-                            .error(R.drawable.ic_launcher_foreground))
-                    .into(holder.image);
-            holder.txtTitle.setText(ingredients.get(position));
-            holder.txtMeasure.setText(measures.get(position));
-
-            Log.i(TAG, "onBindViewHolder: " + ingredients.get(position));
-            Log.i(TAG, "***** onBindViewHolder **************");
+        Log.i(TAG, "onBindViewHolder: " + ingredients.get(position));
+        Log.i(TAG, "***** onBindViewHolder **************");
 
 
 
-            holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //listener.onIngredientClick(ingredients.get(position).getCategory());
-                }
-            });
-        }
-
+        holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onIngredientClick(ingredients.get(position));
+            }
+        });
     }
 
     @Override

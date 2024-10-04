@@ -87,6 +87,24 @@ public class MealsRemoteDataSourceImpl {
         });
     }
 
+    public void getCountriesFromNetwork(NetworkCallback networkCallback) {
+        mealService.getCountries().enqueue(new Callback<MealResponse<Meal>>() {
+            @Override
+            public void onResponse(Call<MealResponse<Meal>> call, Response<MealResponse<Meal>> response) {
+                if(response.isSuccessful()){
+                    Log.i("MainActivity", "onResponse: " + response.body().meals);
+                    networkCallback.onSuccessResult(response.body().meals);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealResponse<Meal>> call, Throwable throwable) {
+                Log.i("MainActivity", "onFailure: ");
+                networkCallback.onFailureResult(throwable.getMessage());
+            }
+        });
+    }
+
     public void getMealsByCountryFromNetwork(NetworkCallback networkCallback, String country) {
         mealService.getMealsbyCountry(country).enqueue(new Callback<MealResponse<Meal>>() {
             @Override

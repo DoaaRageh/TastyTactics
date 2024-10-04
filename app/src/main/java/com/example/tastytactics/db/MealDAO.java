@@ -26,6 +26,9 @@ public interface MealDAO {
     @Delete
     void deleteMeal(Meal product);
 
+    @Query("SELECT * FROM meal_table WHERE idMeal = :mealId")
+    LiveData<Meal> getMealById(String mealId);
+
     @Query("SELECT * FROM plan_table")
     LiveData<List<Plan>>getAllPlannedMeals();
 
@@ -33,8 +36,8 @@ public interface MealDAO {
     LiveData<List<Plan>>getAllPlanMeals(Date planDate);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertMealToPlan(Plan product);
+    void insertMealToPlan(Plan meal);
 
     @Delete
-    void deleteMealFromPlan(Plan product);
+    void deleteMealFromPlan(Plan meal);
 }

@@ -34,15 +34,17 @@ public class MealsRepositoryImpl {
         return localSource.getStoredMeals();
     }
 
-    public LiveData<List<Plan>> getPlannedMeals()
-    {
-        return localSource.getPlannedMeals();
-    }
 
     public LiveData<List<Plan>> getPlanMeals(Date date)
     {
-        return localSource.getPlanMeals(date);
+        return localSource.getPlannedMeals(date);
     }
+
+    public LiveData<Meal> getMealById(String id)
+    {
+        return localSource.getMealById(id);
+    }
+
     public void getRandomMeal(NetworkCallback networkCallback)
     {
         remoteSource.getRandomMealFromNetwork(networkCallback);
@@ -56,6 +58,11 @@ public class MealsRepositoryImpl {
     public void getIngredients(NetworkCallback networkCallback)
     {
         remoteSource.getIngredientsFromNetwork(networkCallback);
+    }
+
+    public void getCountries(NetworkCallback networkCallback)
+    {
+        remoteSource.getCountriesFromNetwork(networkCallback);
     }
 
     public void getMealsByCategory(NetworkCallback networkCallback, String category)

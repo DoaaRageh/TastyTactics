@@ -70,6 +70,11 @@ public class DateFragment extends DialogFragment implements PlanView{
                 Toast.makeText(getContext(), "added to plan " + selectedDateCalendar.getTime(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        if (getDialog() != null && getDialog().getWindow() != null) {
+            getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent); // Make the dialog background transparent
+        }
+
         return v;
     }
 

@@ -7,8 +7,9 @@ import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 @Entity(tableName = "meal_table")
@@ -123,16 +124,36 @@ public class Meal {
 
     public List<String> getIngredients()
     {
-        return Arrays.asList(ingredient1, ingredient2, ingredient3, ingredient4, ingredient5, ingredient6, ingredient7, ingredient8,
+        List<String> ingredients = new ArrayList<>(Arrays.asList(ingredient1, ingredient2, ingredient3, ingredient4, ingredient5, ingredient6, ingredient7, ingredient8,
                 ingredient9, ingredient10, ingredient11, ingredient12, ingredient13, ingredient14, ingredient15, ingredient16,
-                ingredient17, ingredient18, ingredient19, ingredient20);
+                ingredient17, ingredient18, ingredient19, ingredient20));
+
+        Iterator<String> iterator = ingredients.iterator();
+        while (iterator.hasNext()) {
+            String ingredient = iterator.next();
+            if (ingredient == null || ingredient.isBlank()) {
+                iterator.remove();
+            }
+        }
+
+        return ingredients;
     }
 
     public List<String> getMeasures()
     {
-        return Arrays.asList(measure1, measure2, measure3, measure4, measure5, measure6, measure7, measure8,
+        List<String> measures = new ArrayList<>(Arrays.asList(measure1, measure2, measure3, measure4, measure5, measure6, measure7, measure8,
                 measure9, measure10, measure11, measure12, measure13, measure14, measure15, measure16,
-                measure17, measure18, measure19, measure20);
+                measure17, measure18, measure19, measure20));
+
+        Iterator<String> iterator = measures.iterator();
+        while (iterator.hasNext()) {
+            String measure = iterator.next();
+            if (measure == null || measure.isBlank()) {
+                iterator.remove();
+            }
+        }
+
+        return measures;
     }
     public String getIdMeal() {
         return idMeal;

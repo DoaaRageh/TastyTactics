@@ -12,11 +12,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.tastytactics.R;
+import com.example.tastytactics.home.presenter.HomePresenter;
 import com.example.tastytactics.model.Meal;
 
 import java.util.List;
@@ -26,12 +30,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
     private List<Meal> meals;
     private static final String TAG = "RecyclerView";
     private OnMealClickListener listener;
+    private LiveData<Meal> isFav;
+    private HomePresenter homePresenter;
 
     // Constructor
-    public HomeAdapter(Context _context, List<Meal> _meals, OnMealClickListener _listener) {
+    public HomeAdapter(Context _context, List<Meal> _meals, OnMealClickListener _listener, HomePresenter _homePresenter) {
         context = _context;
         meals = _meals;
         listener = _listener;
+        homePresenter = _homePresenter;
     }
 
     public void setList(List<Meal> _meals)
@@ -48,6 +55,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         public ImageButton btnAddToFav;
         public ConstraintLayout constraintLayout;
         public View layout;
+
 
 
 
@@ -75,6 +83,19 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
+        isFav = homePresenter.getMealById(meals.get(position).getIdMeal());
+        isFav.observe((LifecycleOwner) context, new Observer<Meal>() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onChanged(Meal meal) {
+                if(meal == null) {
+                    holder.btnAddToFav.setImageResource(R.drawable.heartt);
+                }
+                else {
+                    holder.btnAddToFav.setImageResource(R.drawable.hearttt);
+                }
+            }
+        });
         Glide.with(context).load(meals.get(position).getMealThumb())
                 .apply(new RequestOptions().override(200,200)
                         .placeholder(R.drawable.ic_launcher_background)
@@ -85,7 +106,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         holder.btnAddToFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onFavClick(meals.get(position));
+                if (isFav.getValue() == null) {
+                    listener.addToFav(meals.get(position));
+                    holder.btnAddToFav.setImageResource(R.drawable.hearttt);  // Change to heart
+                } else {
+                    listener.removeFromFav(meals.get(position));
+                    holder.btnAddToFav.setImageResource(R.drawable.heartt);  // Change to like
+                }
             }
         });
 
@@ -96,11 +123,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
             }
         });
 
-        Log.i(TAG, "onBindViewHolder: " + meals.get(position).getMeal());
-        Log.i(TAG, "***** onBindViewHolder **************");
-
-
-
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,6 +131,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         });
 
     }
+
 
     @Override
     public int getItemCount() {
