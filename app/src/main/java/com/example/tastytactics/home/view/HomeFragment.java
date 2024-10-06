@@ -15,10 +15,7 @@ import android.widget.Toast;
 import com.example.tastytactics.R;
 import com.example.tastytactics.categorymeals.view.CategoryMealsFragment;
 import com.example.tastytactics.db.MealsLocalDataSourceImpl;
-import com.example.tastytactics.home.presenter.CategoryPresenter;
-import com.example.tastytactics.home.presenter.CountryPresenter;
 import com.example.tastytactics.home.presenter.HomePresenter;
-import com.example.tastytactics.home.presenter.IngredientPresenter;
 import com.example.tastytactics.mealdetails.view.MealDetailsFragment;
 import com.example.tastytactics.model.Category;
 import com.example.tastytactics.model.Ingredient;
@@ -36,19 +33,16 @@ public class HomeFragment extends Fragment implements HomeView, OnMealClickListe
     public HomeAdapter homeAdapter;
     public CategoryAdapter categoryAdapter;
     public IngredientAdapter ingredientAdapter;
-    private CategoryPresenter categoryPresenter;
     public CountryAdapter countryAdapter;
-    private CountryPresenter countryPresenter;
-    private IngredientPresenter ingredientPresenter;
     private HomePresenter homePresenter;
     private RecyclerView recyclerView;
     private RecyclerView categoriesrecyclerView;
     private RecyclerView ingredientsRecyclerView;
     private RecyclerView countriesRecyclerView;
-    LinearLayoutManager layoutManager;
-    LinearLayoutManager categoryLayoutManager;
-    LinearLayoutManager ingredientLayoutManager;
-    LinearLayoutManager countriesLayoutManager;
+    private LinearLayoutManager layoutManager;
+    private LinearLayoutManager categoryLayoutManager;
+    private LinearLayoutManager ingredientLayoutManager;
+    private LinearLayoutManager countriesLayoutManager;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -80,28 +74,22 @@ public class HomeFragment extends Fragment implements HomeView, OnMealClickListe
         ingredientLayoutManager = new LinearLayoutManager(getContext());
         countriesLayoutManager = new LinearLayoutManager(getContext());
 
+
         homePresenter = new HomePresenter(this, MealsRepositoryImpl.getInstance(MealsRemoteDataSourceImpl.getInstance().getInstance(),
                 MealsLocalDataSourceImpl.getInstance(getContext())));
+
         homeAdapter = new HomeAdapter(getContext(), new ArrayList<>(), this, homePresenter);
+        categoryAdapter = new CategoryAdapter(getContext(), new ArrayList<>(), this);
+        ingredientAdapter = new IngredientAdapter(getContext(), new ArrayList<>(), this);
+        countryAdapter = new CountryAdapter(getContext(), new ArrayList<>(), this);
 
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        categoryLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        ingredientLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        countriesLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(homeAdapter);
-
-        categoryAdapter = new CategoryAdapter(getContext(), new ArrayList<>(), this);
-        categoryPresenter = new CategoryPresenter(this, MealsRepositoryImpl.getInstance(MealsRemoteDataSourceImpl.getInstance().getInstance(),
-                MealsLocalDataSourceImpl.getInstance(getContext())));
-        categoryLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-
-        ingredientPresenter = new IngredientPresenter(this, MealsRepositoryImpl.getInstance(MealsRemoteDataSourceImpl.getInstance().getInstance(),
-                MealsLocalDataSourceImpl.getInstance(getContext())));
-        ingredientAdapter = new IngredientAdapter(getContext(), new ArrayList<>(), this);
-        ingredientLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-
-        countryAdapter = new CountryAdapter(getContext(), new ArrayList<>(), this);
-        countryPresenter = new CountryPresenter(this, MealsRepositoryImpl.getInstance(MealsRemoteDataSourceImpl.getInstance().getInstance(),
-                MealsLocalDataSourceImpl.getInstance(getContext())));
-        countriesLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
 
         countriesRecyclerView.setLayoutManager(countriesLayoutManager);
         countriesRecyclerView.setAdapter(countryAdapter);
@@ -113,9 +101,9 @@ public class HomeFragment extends Fragment implements HomeView, OnMealClickListe
         ingredientsRecyclerView.setAdapter(ingredientAdapter);
 
         homePresenter.getRandomMeal();
-        categoryPresenter.getCategories();
-        ingredientPresenter.getIngredients();
-        countryPresenter.getIngredients();
+        homePresenter.getCategories();
+        homePresenter.getIngredients();
+        homePresenter.getCountries();
 
         return v;
     }
@@ -129,18 +117,6 @@ public class HomeFragment extends Fragment implements HomeView, OnMealClickListe
     @Override
     public void showErrMsg(String error) {
         Toast.makeText(getContext(), "An Error Occurred", Toast.LENGTH_SHORT).show();
-    }
-
-
-    @Override
-    public void navigateToMealDetails(Meal meal) {
-        MealDetailsFragment mealDetailsFragment = new MealDetailsFragment(meal);
-
-        // Replace the current fragment with MealDetailsFragment
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragmentContainer, mealDetailsFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
     }
 
     @Override
@@ -163,7 +139,12 @@ public class HomeFragment extends Fragment implements HomeView, OnMealClickListe
 
     @Override
     public void onMealClick(Meal meal) {
-        navigateToMealDetails(meal);
+        MealDetailsFragment mealDetailsFragment = new MealDetailsFragment(meal);
+
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentContainer, mealDetailsFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @Override

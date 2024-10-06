@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="30dp"
+    android:layout_marginLeft="30dp"
+    android:layout_marginTop="30dp"
+    android:layout_marginRight="30dp"
     tools:context=".home.view.HomeFragment">
 
     <ScrollView
@@ -66,20 +68,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <!--TextView
                 android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="Countries"
                 android:textColor="#E65C19"
-                android:textSize="25sp" />
+                android:textSize="25sp" /-->
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/countryRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="100dp" />
+                android:layout_marginTop="30dp" />
 
         </LinearLayout>
     </ScrollView>

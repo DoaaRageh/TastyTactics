@@ -67,7 +67,7 @@ public class DateFragment extends DialogFragment implements PlanView{
                 selectedDateCalendar.set(Calendar.MILLISECOND, 0);
                 Plan plan = new Plan(meal, selectedDateCalendar.getTime());
                 planPresenter.addToPlan(plan, selectedDateCalendar.getTime());
-                Toast.makeText(getContext(), "added to plan " + selectedDateCalendar.getTime(), Toast.LENGTH_SHORT).show();
+                dismiss();
             }
         });
 

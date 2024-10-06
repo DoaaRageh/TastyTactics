@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,14 +37,12 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class PlanFragment extends Fragment implements PlanView, OnPlanClickListener {
-    private LiveData<List<Plan>> mealsList;
     private LiveData<List<Plan>> planList;
     private RecyclerView recyclerView;
     private PlanAdapter favAdapter;
-    PlanPresenter favPresenter;
-    LinearLayoutManager layoutManager;
+    private PlanPresenter favPresenter;
+    private GridLayoutManager gridLayoutManager;
     private CalendarView calendarView;
-    private Date date;
 
     public PlanFragment() {
         // Required empty public constructor
@@ -64,13 +63,11 @@ public class PlanFragment extends Fragment implements PlanView, OnPlanClickListe
         calendarView = v.findViewById(R.id.calendarView);
         recyclerView = v.findViewById(R.id.sundayRecyclerView);
         recyclerView.setHasFixedSize(true);
+        gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
 
-        //Toast.makeText(getContext(), "date: "+ date, Toast.LENGTH_SHORT).show();
-        layoutManager = new LinearLayoutManager(getContext());
         favPresenter = new PlanPresenter(this, MealsRepositoryImpl.getInstance(MealsRemoteDataSourceImpl.getInstance().getInstance(),
                 MealsLocalDataSourceImpl.getInstance(getContext())));
-        layoutManager.setOrientation(RecyclerView.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(gridLayoutManager);
 
         favAdapter = new PlanAdapter(getContext(), new ArrayList<>(), this);
         recyclerView.setAdapter(favAdapter);
@@ -96,28 +93,13 @@ public class PlanFragment extends Fragment implements PlanView, OnPlanClickListe
 
         });
 
-        //mealsList = favPresenter.getMeals();
-
-        /*mealsList.observe(getViewLifecycleOwner(), new Observer<List<Plan>>() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onChanged(List<Plan> meals) {
-                if (meals != null) {
-                    showData(meals);
-                }
-                else {
-                    showErrMsg("There are no meals");
-                }
-            }
-        });*/
-
         return v;
     }
 
     @Override
     public void onPlannedMealClick(Plan meal) {
         favPresenter.removeFromPlan(meal);
-        Toast.makeText(getContext(), "Meal Removed From Favorite", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Meal Removed From Plan", Toast.LENGTH_SHORT).show();
     }
 
     @Override

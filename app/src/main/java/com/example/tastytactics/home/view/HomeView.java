@@ -12,5 +12,4 @@ public interface HomeView {
     public void showCategories(List<Category> Category);
     public void showIngredients(List<Ingredient> ingredients);
     public void showCountries(List<Meal> meals);
-    void navigateToMealDetails(Meal meal);
 }

@@ -1,5 +1,7 @@
 package com.example.tastytactics.search.presenter;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.tastytactics.model.Meal;
 import com.example.tastytactics.model.MealsRepositoryImpl;
 import com.example.tastytactics.network.NetworkCallback;
@@ -30,6 +32,11 @@ public class SearchPresenter implements NetworkCallback<Meal> {
         repo.getMealsByCountry(this, country);
     }
 
+    public LiveData<Meal> getFavMealById(String id)
+    {
+        return repo.getMealById(id);
+    }
+
     public void serchByCategory(String category) {
         repo.getMealsByCategory(this, category);
     }
@@ -44,5 +51,15 @@ public class SearchPresenter implements NetworkCallback<Meal> {
 
     public void getMealById(String id) {
         repo.getMealsById(this, id);
+    }
+
+    public void addToFav(Meal meal)
+    {
+        repo.insertMeal(meal);
+    }
+
+    public void removeFromFav(Meal meal)
+    {
+        repo.deleteMeal(meal);
     }
 }

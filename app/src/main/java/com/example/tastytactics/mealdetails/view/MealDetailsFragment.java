@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,32 +27,23 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.tastytactics.R;
 import com.example.tastytactics.categorymeals.view.CategoryMealsFragment;
 import com.example.tastytactics.db.MealsLocalDataSourceImpl;
-import com.example.tastytactics.home.presenter.CategoryPresenter;
-import com.example.tastytactics.home.presenter.HomePresenter;
-import com.example.tastytactics.home.view.CategoryAdapter;
-import com.example.tastytactics.home.view.HomeAdapter;
+import com.example.tastytactics.home.view.OnMealClickListener;
 import com.example.tastytactics.mealdetails.presenter.MealDetailsPresenter;
-import com.example.tastytactics.model.Ingredient;
 import com.example.tastytactics.model.Meal;
 import com.example.tastytactics.model.MealsRepositoryImpl;
 import com.example.tastytactics.network.MealsRemoteDataSourceImpl;
 import com.example.tastytactics.plan.view.DateFragment;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link MealDetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MealDetailsFragment extends Fragment implements MealDetailsView, OnIngredientClickListener{
+public class MealDetailsFragment extends Fragment implements MealDetailsView, OnMealClickListener, OnIngredientClickListener{
 
     public TextView txtSteps;
     public TextView txtTitle;
+    public TextView txtCountry;
     public ImageView image;
     public ImageButton btnAddToFav;
     public Button btnAddToPlan;
@@ -61,7 +51,6 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView, On
     private MealDetailsPresenter presenter;
     public MealDetailsAdapter mealDetailsAdapter;
     private RecyclerView recyclerView;
-    //GridLayoutManager gridLayoutManager;
     LinearLayoutManager layoutManager;
     private LiveData<Meal> isFav;
 
@@ -84,6 +73,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView, On
         txtSteps = v.findViewById(R.id.txtSteps);
         image = v.findViewById(R.id.imageView);
         txtTitle = v.findViewById(R.id.mealTitle);
+        txtCountry = v.findViewById(R.id.txtCountry);
         webView = v.findViewById(R.id.webView);
         btnAddToPlan = v.findViewById(R.id.btnAddToPlan);
 
@@ -109,18 +99,14 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView, On
         recyclerView = v.findViewById(R.id.ingredientsRecyclerView);
 
         recyclerView.setHasFixedSize(true);
-
-
-        //gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutFrozen(true);
 
         layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
         mealDetailsAdapter = new MealDetailsAdapter(getContext(), meal.getIngredients(), meal.getMeasures(), this);
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mealDetailsAdapter);
-
-        //presenter.getIngredients();
 
         return  v;
     }
@@ -155,6 +141,8 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView, On
         }
         txtSteps.setText(modifiedText);
         txtTitle.setText(meal.getMeal());
+        txtCountry.setText(meal.getArea()
+        );
         Glide.with(getContext()).load(meal.getMealThumb())
                 .apply(new RequestOptions().override(200,200)
                         .placeholder(R.drawable.ic_launcher_background)
@@ -190,15 +178,17 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView, On
     }
 
     @Override
+    public void onMealClick(Meal meal) {
+    }
+
+    @Override
     public void addToFav(Meal meal) {
         presenter.addToFav(meal);
-        //Toast.makeText(getContext(),"Meal Added To Favorite",Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void removeFromFav(Meal meal) {
         presenter.removeFromFav(meal);
-        //Toast.makeText(getContext(),"Meal Removed From Favorite",Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -206,14 +196,12 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView, On
         DateFragment dateFragment = new DateFragment(meal);
         dateFragment.show(getChildFragmentManager(), "DateFragment");
 
-
     }
 
     @Override
     public void onIngredientClick(String ingredientName) {
         CategoryMealsFragment categoryMealsFragment = new CategoryMealsFragment(ingredientName, "i");
 
-        // Replace the current fragment with MealDetailsFragment
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragmentContainer, categoryMealsFragment);
         transaction.addToBackStack(null);

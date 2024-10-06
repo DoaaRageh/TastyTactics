@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -42,7 +43,7 @@ public class MealDetailsAdapter extends RecyclerView.Adapter<MealDetailsAdapter.
         public ImageView image;
         public TextView txtTitle;
         public TextView txtMeasure;
-        public ConstraintLayout constraintLayout;
+        public LinearLayout linearLayout;
         public View layout;
 
 
@@ -52,18 +53,17 @@ public class MealDetailsAdapter extends RecyclerView.Adapter<MealDetailsAdapter.
             image = v.findViewById(R.id.ingredientImage);
             txtTitle = v.findViewById(R.id.ingredientTitle);
             txtMeasure = v.findViewById(R.id.txtMeasure);
-            constraintLayout = v.findViewById(R.id.ingredientRow);
+            linearLayout = v.findViewById(R.id.ingredientRow);
 
         }
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public MealDetailsAdapter.ViewHolder onCreateViewHolder(ViewGroup recyclerView, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup recyclerView, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(recyclerView.getContext());
         View v = inflater.inflate(R.layout.ingredient_layout, recyclerView, false);
-        MealDetailsAdapter.ViewHolder vh = new MealDetailsAdapter.ViewHolder(v);
-        Log.i(TAG, "===== onCreateViewHolder =====");
+        ViewHolder vh = new ViewHolder(v);
         return vh;
     }
 
@@ -72,18 +72,13 @@ public class MealDetailsAdapter extends RecyclerView.Adapter<MealDetailsAdapter.
          imageUrl = "https://www.themealdb.com/images/ingredients/" + ingredients.get(position) + ".png";
         Glide.with(context).load(imageUrl)
                 .apply(new RequestOptions().override(200,200)
-                        .placeholder(R.drawable.ic_launcher_background)
                         .error(R.drawable.ic_launcher_foreground))
+                .circleCrop()
                 .into(holder.image);
         holder.txtTitle.setText(ingredients.get(position));
         holder.txtMeasure.setText(measures.get(position));
 
-        Log.i(TAG, "onBindViewHolder: " + ingredients.get(position));
-        Log.i(TAG, "***** onBindViewHolder **************");
-
-
-
-        holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
+        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 listener.onIngredientClick(ingredients.get(position));

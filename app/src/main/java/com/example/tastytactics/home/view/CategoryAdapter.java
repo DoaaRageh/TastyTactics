@@ -2,7 +2,6 @@ package com.example.tastytactics.home.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,27 +56,20 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     // Create new views (invoked by the layout manager)
     @Override
-    public CategoryAdapter.ViewHolder onCreateViewHolder(ViewGroup recyclerView, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(recyclerView.getContext());
+    public ViewHolder onCreateViewHolder(ViewGroup recyclerView, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(context);
         View v = inflater.inflate(R.layout.category_layout, recyclerView, false);
-        CategoryAdapter.ViewHolder vh = new CategoryAdapter.ViewHolder(v);
-        Log.i(TAG, "===== onCreateViewHolder =====");
+        ViewHolder vh = new ViewHolder(v);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(CategoryAdapter.ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
+    public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         Glide.with(context).load(categories.get(position).getCategoryThumb())
                 .apply(new RequestOptions().override(200,200)
-                        .placeholder(R.drawable.ic_launcher_background)
                         .error(R.drawable.ic_launcher_foreground))
                 .into(holder.image);
         holder.txtTitle.setText(categories.get(position).getCategory());
-
-        Log.i(TAG, "onBindViewHolder: " + categories.get(position).getCategory());
-        Log.i(TAG, "***** onBindViewHolder **************");
-
-
 
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override

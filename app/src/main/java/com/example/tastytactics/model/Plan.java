@@ -2,12 +2,15 @@ package com.example.tastytactics.model;
 
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
 
-@Entity(tableName = "plan_table")
+@Entity(tableName = "plan_table",
+        indices = {@Index(value = {"meal", "date"}, unique = true)})
+
 public class Plan {
 
     @PrimaryKey(autoGenerate = true)

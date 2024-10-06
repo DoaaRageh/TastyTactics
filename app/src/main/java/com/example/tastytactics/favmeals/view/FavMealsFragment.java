@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.tastytactics.R;
 import com.example.tastytactics.db.MealsLocalDataSourceImpl;
 import com.example.tastytactics.favmeals.presenter.FavMealsPresenter;
+import com.example.tastytactics.home.view.OnMealClickListener;
 import com.example.tastytactics.mealdetails.view.MealDetailsFragment;
 import com.example.tastytactics.model.Meal;
 import com.example.tastytactics.model.MealsRepositoryImpl;
@@ -31,7 +32,7 @@ import java.util.List;
  * Use the {@link FavMealsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FavMealsFragment extends Fragment implements FavMealsView, OnFavClickListener{
+public class FavMealsFragment extends Fragment implements FavMealsView, OnMealClickListener {
     private LiveData<List<Meal>> mealsList;
     private RecyclerView recyclerView;
     private FavMealsAdapter favAdapter;
@@ -83,20 +84,27 @@ public class FavMealsFragment extends Fragment implements FavMealsView, OnFavCli
     }
 
     @Override
-    public void onFavMealClick(Meal meal) {
+    public void onMealClick(Meal meal) {
+        MealDetailsFragment mealDetailsFragment = new MealDetailsFragment(meal);
+
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentContainer, mealDetailsFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    @Override
+    public void addToFav(Meal meal) {
+    }
+
+    @Override
+    public void removeFromFav(Meal meal) {
         favPresenter.removeFromFav(meal);
         Toast.makeText(getContext(), "Meal Removed From Favorite", Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onMealClick(Meal meal) {
-        MealDetailsFragment mealDetailsFragment = new MealDetailsFragment(meal);
-
-        // Replace the current fragment with MealDetailsFragment
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragmentContainer, mealDetailsFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+    public void onCalenderClick(Meal meal) {
     }
 
     @Override

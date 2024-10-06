@@ -57,8 +57,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         public View layout;
 
 
-
-
         public ViewHolder(View v) {
             super(v);
             layout = v;
@@ -77,7 +75,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         LayoutInflater inflater = LayoutInflater.from(recyclerView.getContext());
         View v = inflater.inflate(R.layout.meal_layout, recyclerView, false);
         ViewHolder vh = new ViewHolder(v);
-        Log.i(TAG, "===== onCreateViewHolder =====");
         return vh;
     }
 
@@ -98,7 +95,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         });
         Glide.with(context).load(meals.get(position).getMealThumb())
                 .apply(new RequestOptions().override(200,200)
-                        .placeholder(R.drawable.ic_launcher_background)
                         .error(R.drawable.ic_launcher_foreground))
                 .into(holder.image);
         holder.txtTitle.setText(meals.get(position).getMeal());

@@ -49,9 +49,9 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
         public ViewHolder(View v) {
             super(v);
             layout = v;
-            image = v.findViewById(R.id.categoryImage);
-            txtTitle = v.findViewById(R.id.categoryTitle);
-            constraintLayout = v.findViewById(R.id.categoryRow);
+            image = v.findViewById(R.id.ingredientImage);
+            txtTitle = v.findViewById(R.id.ingredientTitle);
+            constraintLayout = v.findViewById(R.id.ingredientRow);
 
         }
     }
@@ -60,9 +60,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup recyclerView, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(recyclerView.getContext());
-        View v = inflater.inflate(R.layout.category_layout, recyclerView, false);
-        IngredientAdapter.ViewHolder vh = new IngredientAdapter.ViewHolder(v);
-        Log.i(TAG, "===== onCreateViewHolder =====");
+        View v = inflater.inflate(R.layout.ingredients_layout, recyclerView, false);
+        ViewHolder vh = new ViewHolder(v);
         return vh;
     }
 
@@ -71,15 +70,9 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
         imageUrl = "https://www.themealdb.com/images/ingredients/" + ingredients.get(position).getIngredient() + ".png";
         Glide.with(context).load(imageUrl)
                 .apply(new RequestOptions().override(200,200)
-                        .placeholder(R.drawable.ic_launcher_background)
                         .error(R.drawable.ic_launcher_foreground))
                 .into(holder.image);
         holder.txtTitle.setText(ingredients.get(position).getIngredient());
-
-        Log.i(TAG, "onBindViewHolder: " + ingredients.get(position).getIngredient());
-        Log.i(TAG, "***** onBindViewHolder **************");
-
-
 
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override

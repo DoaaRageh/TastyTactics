@@ -58,9 +58,6 @@ public class SearchFragment extends Fragment implements SearchVieww, OnSearchCli
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_search, container, false);
 
-
-
-
         searchRecyclerView = v.findViewById(R.id.searchRecyclerView);
         TabLayout tabLayout = v.findViewById(R.id.tabLayout);
         SearchView searchView = v.findViewById(R.id.searchVieww);
@@ -75,13 +72,6 @@ public class SearchFragment extends Fragment implements SearchVieww, OnSearchCli
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         searchRecyclerView.setLayoutManager(layoutManager);
         searchRecyclerView.setAdapter(searchAdapter);
-
-        /*btnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                searchPresenter.serchByCategory(editSearch.getText().toString());
-            }
-        });*/
 
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -155,7 +145,6 @@ public class SearchFragment extends Fragment implements SearchVieww, OnSearchCli
     public void showData(List<Meal> meals) {
         if(searchAdapter.byId){
             navigateToMealDetails(meals.get(0));
-            Log.i("byId", "showData: ");
             searchAdapter.byId = false;
         }
         else {

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -60,11 +61,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     // Create new views (invoked by the layout manager)
     @Override
-    public SearchAdapter.ViewHolder onCreateViewHolder(ViewGroup recyclerView, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup recyclerView, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(recyclerView.getContext());
         View v = inflater.inflate(R.layout.search_layout, recyclerView, false);
-        SearchAdapter.ViewHolder vh = new SearchAdapter.ViewHolder(v);
-        Log.i(TAG, "===== onCreateViewHolder =====");
+        ViewHolder vh = new ViewHolder(v);
         return vh;
     }
 
@@ -72,15 +72,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     public void onBindViewHolder(SearchAdapter.ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         Glide.with(context).load(meals.get(position).getMealThumb())
                 .apply(new RequestOptions().override(200,200)
-                        .placeholder(R.drawable.ic_launcher_background)
                         .error(R.drawable.ic_launcher_foreground))
                 .circleCrop()
                 .into(holder.image);
-        holder.txtTitle.setText(meals.get(position).getMeal());
-        Log.i(TAG, "onBindViewHolder: " + meals.get(position).getMeal());
-        Log.i(TAG, "***** onBindViewHolder **************");
-
-
 
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override

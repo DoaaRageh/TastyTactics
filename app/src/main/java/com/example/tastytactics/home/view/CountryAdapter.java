@@ -12,38 +12,35 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.tastytactics.R;
-import com.example.tastytactics.model.Ingredient;
 import com.example.tastytactics.model.Meal;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHolder>{
     private final Context context;
     private static final String TAG = "RecyclerView";
     private OnCategoryClickListener listener;
-    private List<Meal> countries;
-    private String imageUrl;
+    private List<Meal> countries = new ArrayList<>();
     int id;
 
     // Constructor
-    public CountryAdapter(Context _context, List<Meal> _ingredients, OnCategoryClickListener _listener) {
+    public CountryAdapter(Context _context, List<Meal> _countries, OnCategoryClickListener _listener) {
         context = _context;
-        countries = _ingredients;
+        countries = _countries;
         listener = _listener;
     }
 
-    public void setCategories(List<Meal> _ingredients)
+    public void setCategories(List<Meal> _countries)
     {
-        countries = _ingredients;
+        _countries.removeIf(country -> "Unknown".equals(country.getArea()));
+        countries = _countries;
     }
 
     // ViewHolder inner class
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView image;
-        public TextView txtTitle;
         public ConstraintLayout constraintLayout;
         public View layout;
 
@@ -62,8 +59,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHold
     public ViewHolder onCreateViewHolder(ViewGroup recyclerView, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(recyclerView.getContext());
         View v = inflater.inflate(R.layout.country_layout, recyclerView, false);
-        CountryAdapter.ViewHolder vh = new CountryAdapter.ViewHolder(v);
-        Log.i(TAG, "===== onCreateViewHolder =====");
+        ViewHolder vh = new ViewHolder(v);
         return vh;
     }
 
@@ -72,11 +68,6 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHold
 
         id = context.getResources().getIdentifier(countries.get(position).getArea().toLowerCase(), "drawable", context.getPackageName());
         holder.image.setImageResource(id);
-
-        Log.i(TAG, "onBindViewHolder: " + countries.get(position).getArea());
-        Log.i(TAG, "***** onBindViewHolder **************");
-
-
 
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override

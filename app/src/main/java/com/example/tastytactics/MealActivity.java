@@ -28,12 +28,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MealActivity extends AppCompatActivity {
 
-    private HomeFragment homeFragment;
-    private SearchFragment searchFragment;
-    private FavMealsFragment favMealsFragment;
-    private PlanFragment planFragment;
-    private NoNetworkFragment noNetworkFragment;
-    private Fragment fragment;
     FragmentTransaction trns;
     private BroadcastReceiver networkReceiver;
 
