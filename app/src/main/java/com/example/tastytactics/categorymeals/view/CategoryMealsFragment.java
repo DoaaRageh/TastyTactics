@@ -169,10 +169,10 @@ public class CategoryMealsFragment extends Fragment implements SearchVieww, OnSe
             @Override
             public void onChanged(Meal meal) {
                 if(meal == null) {
-                    btnAddToFav.setImageResource(R.drawable.heartt);
+                    btnAddToFav.setImageResource(R.drawable.heartone);
                 }
                 else {
-                    btnAddToFav.setImageResource(R.drawable.hearttt);
+                    btnAddToFav.setImageResource(R.drawable.hearttwo);
                 }
             }
         });

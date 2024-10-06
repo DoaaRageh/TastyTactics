@@ -86,10 +86,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
             @Override
             public void onChanged(Meal meal) {
                 if(meal == null) {
-                    holder.btnAddToFav.setImageResource(R.drawable.heartt);
+                    holder.btnAddToFav.setImageResource(R.drawable.heartone);
                 }
                 else {
-                    holder.btnAddToFav.setImageResource(R.drawable.hearttt);
+                    holder.btnAddToFav.setImageResource(R.drawable.hearttwo);
                 }
             }
         });
@@ -104,10 +104,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
             public void onClick(View view) {
                 if (isFav.getValue() == null) {
                     listener.addToFav(meals.get(position));
-                    holder.btnAddToFav.setImageResource(R.drawable.hearttt);  // Change to heart
+                    holder.btnAddToFav.setImageResource(R.drawable.hearttwo);  // Change to heart
                 } else {
                     listener.removeFromFav(meals.get(position));
-                    holder.btnAddToFav.setImageResource(R.drawable.heartt);  // Change to like
+                    holder.btnAddToFav.setImageResource(R.drawable.heartone);  // Change to like
                 }
             }
         });

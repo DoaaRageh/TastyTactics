@@ -75,7 +75,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                         .error(R.drawable.ic_launcher_foreground))
                 .circleCrop()
                 .into(holder.image);
-
+        holder.txtTitle.setText(meals.get(position).getMeal());
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

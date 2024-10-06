@@ -119,10 +119,10 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView, On
             @Override
             public void onChanged(Meal _meal) {
                 if(_meal == null) {
-                    btnAddToFav.setImageResource(R.drawable.heartt);
+                    btnAddToFav.setImageResource(R.drawable.heartone);
                 }
                 else {
-                    btnAddToFav.setImageResource(R.drawable.hearttt);
+                    btnAddToFav.setImageResource(R.drawable.hearttwo);
                 }
             }
         });
@@ -153,10 +153,10 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView, On
             public void onClick(View view) {
                 if (isFav.getValue() == null) {
                     addToFav(meal);
-                    btnAddToFav.setImageResource(R.drawable.hearttt);  // Change to heart
+                    btnAddToFav.setImageResource(R.drawable.hearttwo);  // Change to heart
                 } else {
                     removeFromFav(meal);
-                    btnAddToFav.setImageResource(R.drawable.heartt);  // Change to like
+                    btnAddToFav.setImageResource(R.drawable.heartone);  // Change to like
                 }
             }
         });
